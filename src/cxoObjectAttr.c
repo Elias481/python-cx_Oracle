@@ -21,6 +21,8 @@ static PyObject *cxoObjectAttr_repr(cxoObjectAttr*);
 //-----------------------------------------------------------------------------
 static PyMemberDef cxoObjectAttrMembers[] = {
     { "name", T_OBJECT, offsetof(cxoObjectAttr, name), READONLY },
+    { "vartype", T_OBJECT, offsetof(cxoObjectAttr, varType), READONLY },
+    { "type", T_OBJECT, offsetof(cxoObjectAttr, type), READONLY },
     { NULL }
 };
 
@@ -81,6 +83,7 @@ static int cxoObjectAttr_initialize(cxoObjectAttr *attr,
         cxoConnection *connection)
 {
     dpiObjectAttrInfo info;
+    cxoVarType *vartype;
 
     if (dpiObjectAttr_getInfo(attr->handle, &info) < 0)
         return cxoError_raiseAndReturnInt();
@@ -90,6 +93,9 @@ static int cxoObjectAttr_initialize(cxoObjectAttr *attr,
             connection->encodingInfo.encoding, NULL);
     if (!attr->name)
         return -1;
+    vartype = cxoVarType_fromTransformNum(attr->transformNum);
+    if (vartype)
+        attr->varType = vartype->pythonType;
     if (info.typeInfo.objectType) {
         attr->type = cxoObjectType_new(connection,
                 info.typeInfo.objectType);

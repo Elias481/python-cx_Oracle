@@ -43,6 +43,8 @@ static PyMemberDef cxoObjectTypeMembers[] = {
             READONLY },
     { "iscollection", T_BOOL, offsetof(cxoObjectType, isCollection),
             READONLY },
+    { "elementVartype", T_OBJECT, offsetof(cxoObjectType, elementVartype),
+            READONLY },
     { NULL }
 };
 
@@ -105,6 +107,7 @@ static int cxoObjectType_initialize(cxoObjectType *objType,
     dpiObjectAttr **attributes;
     dpiObjectTypeInfo info;
     cxoObjectAttr *attr;
+    cxoVarType *vartype;
     uint16_t i;
 
     // get object type information
@@ -124,6 +127,11 @@ static int cxoObjectType_initialize(cxoObjectType *objType,
     objType->elementOracleTypeNum = info.elementTypeInfo.oracleTypeNum;
     objType->elementTransformNum =
             cxoTransform_getNumFromDataTypeInfo(&info.elementTypeInfo);
+
+    vartype = cxoVarType_fromTransformNum(objType->elementTransformNum);
+    if (vartype)
+            objType->elementVartype = vartype->pythonType;
+
     if (info.elementTypeInfo.objectType) {
         objType->elementType = (PyObject*) cxoObjectType_new(connection,
                 info.elementTypeInfo.objectType);
