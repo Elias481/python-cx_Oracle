@@ -195,6 +195,18 @@ cxoVarType *cxoVarType_fromPythonType(PyTypeObject *type)
     return &cxoAllVarTypes[transformNum];
 }
 
+//-----------------------------------------------------------------------------
+// cxoVarType_fromTransformNum()
+//   Return a variable type a cxoTransformNum or NULL for
+//  CXO_TRANSFORM_UNSUPPORTED
+//-----------------------------------------------------------------------------
+cxoVarType *cxoVarType_fromTransformNum(cxoTransformNum transformNum)
+{
+    if (transformNum == CXO_TRANSFORM_UNSUPPORTED) {
+        return NULL;
+    }
+    return &cxoAllVarTypes[transformNum];
+}
 
 //-----------------------------------------------------------------------------
 // cxoVarType_calculateSize()

@@ -335,6 +335,7 @@ struct cxoObjectAttr {
     dpiOracleTypeNum oracleTypeNum;
     cxoTransformNum transformNum;
     cxoObjectType *type;
+    PyTypeObject *varType;
 };
 
 struct cxoObjectType {
@@ -348,6 +349,7 @@ struct cxoObjectType {
     dpiOracleTypeNum elementOracleTypeNum;
     cxoTransformNum elementTransformNum;
     PyObject *elementType;
+    PyTypeObject *elementVartype;
     char isCollection;
 };
 
@@ -529,6 +531,7 @@ int cxoUtils_processSodaDocArg(cxoSodaDatabase *db, PyObject *arg,
 
 cxoVarType *cxoVarType_fromDataTypeInfo(dpiDataTypeInfo *info);
 cxoVarType *cxoVarType_fromPythonType(PyTypeObject *type);
+cxoVarType *cxoVarType_fromTransformNum(cxoTransformNum transformNum);
 cxoVarType *cxoVarType_fromPythonValue(PyObject *value, int *isArray,
         Py_ssize_t *size, Py_ssize_t *numElements, int plsql);
 
