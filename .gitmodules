@@ -1,3 +1,4 @@
 [submodule "odpi"]
 	path = odpi
-	url = https://github.com/oracle/odpi.git
+	url = git@github.com:Elias481/odpi.git
+	branch = report-iana-cesu8-encoding
